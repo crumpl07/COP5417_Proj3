@@ -43,6 +43,7 @@ public class HashTable {
          */
         
         int index = hash(key);
+
         ArrayList<String> st = hash.get(index);
         if(st.get(0).equals("")){
             st.set(0, key);

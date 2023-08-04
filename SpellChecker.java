@@ -32,7 +32,7 @@ public class SpellChecker {
                 numOfInputs++;
             }
         } catch (Exception e) {}
-        
+
         System.out.println(numOfInputs + " words loaded");
     }
 
@@ -62,7 +62,6 @@ public class SpellChecker {
                 System.out.println("Suggestions for " + misspelled.get(i) + ":");
 
                 for(int j = 0; j < hashTable.hash.size(); j++){
-
                     for(int k = 0; k < hashTable.hash.get(j).size(); k++){
 
                         if(difference(misspelled.get(i), hashTable.hash.get(j).get(k)) > 0.8){
@@ -93,11 +92,11 @@ public class SpellChecker {
           shorter = misspelled;
         }
 
-        if(longer.length() != 0){
-            percentDiff = (longer.length() - stringDiff(longer, shorter)) / (double) longer.length();
+        if(longer.length() == 0){
+            percentDiff = 0;
         }
         else{
-            percentDiff = 0;
+            percentDiff = (longer.length() - stringDiff(longer, shorter)) / (double) longer.length();
         }
         
         return percentDiff;
@@ -130,9 +129,9 @@ public class SpellChecker {
                         int newValue = difference[j - 1];
                         if(longer.charAt(i - 1) != shorter.charAt(j - 1)){
                             newValue = Math.min(Math.min(newValue, lastValue), difference[j]) + 1;
-                            difference[j - 1] = lastValue;
-                            lastValue = newValue;
                         }
+                        difference[j - 1] = lastValue;
+                        lastValue = newValue;
                     }
                 }
             }
