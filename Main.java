@@ -7,6 +7,6 @@ public class Main {
         spellChecker.loadDictionary("dict.txt");
 
         // Perform spell check on the input file
-        //spellChecker.checkWords("input.txt");
+        spellChecker.checkWords("input.txt");
     }
 }
