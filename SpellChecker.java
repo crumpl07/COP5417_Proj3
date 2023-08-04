@@ -37,6 +37,11 @@ public class SpellChecker {
     }
 
     public void checkWords(String inputFile){
+        /*
+         *  Checks the input file for mispelt words
+         * 
+         *  @param inputFile
+         */
         int numOfInputs = 0;
         int numOfMisp = 0;
         ArrayList<String> misspelled = new ArrayList<>();
@@ -47,13 +52,16 @@ public class SpellChecker {
             String st;
             // While there is more data keep reading
             System.out.println("Reading from " + inputFile);
+        
             while ((st = br.readLine()) != null){
+
                 if(!hashTable.contains(st)){
                     numOfMisp++;
                     misspelled.add(st);
                 } 
                 numOfInputs++;
             }
+
             System.out.println(numOfInputs + " words to check");
             System.out.println(numOfMisp + " misspelled words found");
 
@@ -62,6 +70,7 @@ public class SpellChecker {
                 System.out.println("Suggestions for " + misspelled.get(i) + ":");
 
                 for(int j = 0; j < hashTable.hash.size(); j++){
+
                     for(int k = 0; k < hashTable.hash.get(j).size(); k++){
 
                         if(difference(misspelled.get(i), hashTable.hash.get(j).get(k)) > 0.8){
@@ -75,70 +84,71 @@ public class SpellChecker {
 
     }
 
-    public double difference(String misspelled, String dictVal){
+    public double difference(String firstString, String secondString){
         /*
-         *  Gets the difference of two strings as a percentage.
+         * Calculates the percentage difference between two strings.
          * 
-         *  @param misspelled
-         *  @param dictVal
-         *  @return percentDiff
+         * @param firstString 
+         * @param secondString 
+         * @return percentDifference
          */
-        String longer = misspelled;
-        String shorter = dictVal;
-        double percentDiff = 0;
 
-        if(misspelled.length() < dictVal.length()){
-          longer = dictVal; 
-          shorter = misspelled;
+        String longerString = firstString;
+        String shorterString = secondString;
+        double percentDifference = 0;
+ 
+        if(firstString.length() < secondString.length()){
+            longerString = secondString; 
+            shorterString = firstString;
         }
-
-        if(longer.length() == 0){
-            percentDiff = 0;
+ 
+        if(longerString.length() == 0){
+            percentDifference = 0;
         }
         else{
-            percentDiff = (longer.length() - stringDiff(longer, shorter)) / (double) longer.length();
+         int stringDiff = stringDiff(longerString, shorterString);
+         percentDifference = (longerString.length() - stringDiff) / (double) longerString.length();
         }
-        
-        return percentDiff;
+ 
+        return percentDifference;
     }
 
-    public int stringDiff(String longer, String shorter){
+    public int stringDiff(String source, String target){
         /*
-         *  Gets the difference between two strings using the 
-         *  Levenshtein distance algorithm.
+         * Calculates the Levenshtein distance between two strings.
          * 
-         *  @param longer
-         *  @param shorter
-         *  @return difference
+         * @param source 
+         * @param target 
+         * @return distance
          */
-        longer = longer.toLowerCase();
-        shorter = shorter.toLowerCase();
-    
-        int[] difference = new int[shorter.length() + 1];
 
-        for(int i = 0; i <= longer.length(); i++){
+        source = source.toLowerCase();
+        target = target.toLowerCase();
 
-            int lastValue = i;
+        int[] distance = new int[target.length() + 1];
 
-            for(int j = 0; j <= shorter.length(); j++){
-                if(i == 0){
-                    difference[j] = j;
+        for(int i = 0; i <= source.length(); i++){
+            int previousValue = i;
+
+            for(int j = 0; j <= target.length(); j++){
+                if (i == 0){
+                    distance[j] = j;
                 }
                 else{
                     if(j > 0){
-                        int newValue = difference[j - 1];
-                        if(longer.charAt(i - 1) != shorter.charAt(j - 1)){
-                            newValue = Math.min(Math.min(newValue, lastValue), difference[j]) + 1;
+                        int newValue = distance[j - 1];
+                        if(source.charAt(i - 1) != target.charAt(j - 1)){
+                            newValue = Math.min(Math.min(newValue, previousValue), distance[j]) + 1;
                         }
-                        difference[j - 1] = lastValue;
-                        lastValue = newValue;
+                        distance[j - 1] = previousValue;
+                        previousValue = newValue;
                     }
                 }
             }
-            if(i > 0){
-                difference[shorter.length()] = lastValue;
+            if (i > 0) {
+                distance[target.length()] = previousValue;
             }
         }
-        return difference[shorter.length()];
+        return distance[target.length()];
     }
 }
