@@ -35,10 +35,10 @@ The checkWords method: Checks the correctness of words in the input file and pri
 
 The class that implements the hash table. It should be a simple hash table that stores only the keys.
 
-    The HashTable constructor: Creates a hash table with the given size passed to the constructor.
-    The hash method: Hashes the given key. You can use the hashCode method of the String class.
-    The put method: adds a key to the hash table.
-    The contains method: checks if the hash table contains the given key.
-    We do not need delete, size, resize, and isEmpty methods for this project at all.
+The HashTable constructor: Creates a hash table with the given size passed to the constructor.
+The hash method: Hashes the given key. You can use the hashCode method of the String class.
+The put method: adds a key to the hash table.
+The contains method: checks if the hash table contains the given key.
+We do not need delete, size, resize, and isEmpty methods for this project at all.
 
 ![Image](Capture.PNG)
